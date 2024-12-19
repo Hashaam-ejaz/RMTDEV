@@ -2,7 +2,9 @@ import {
   jobListSearchEl,
   jobDetailsContentEl,
   BASE_API_URL,
+  getData,
 } from "../common.js";
+import renderError from "./Error.js";
 import { renderJobDetails } from "./jobDetails.js";
 import { renderSpinner, deRenderSpinner } from "./Spinner.js";
 
@@ -20,14 +22,14 @@ const clickHandler = async (event) => {
   renderSpinner("jobDetails");
   const id = jobItemEl.children[0].getAttribute("href");
   try {
-    const result = await fetch(`${BASE_API_URL}/jobs/${id}`);
-    if (!result.ok) throw new Error("Response not in 2xx range");
-    const data = await result.json();
+    const data = await getData(`${BASE_API_URL}/jobs/${id}`);
+    if (!result.ok) throw new Error(data.description);
     const { jobItem } = data;
     deRenderSpinner("jobDetails");
     renderJobDetails(jobItem);
   } catch (error) {
-    console.log(error);
+    deRenderSpinner("jobDetails");
+    renderError(error.message);
   }
 };
 jobListSearchEl.addEventListener("click", clickHandler);

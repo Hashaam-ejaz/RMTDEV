@@ -4,6 +4,7 @@ import {
   jobListSearchEl,
   numberEl,
   BASE_API_URL,
+  getData,
 } from "../common.js";
 import renderError from "./Error.js";
 import { renderJobList } from "./JobList.js";
@@ -25,17 +26,14 @@ const submitHandler = async (event) => {
   jobListSearchEl.innerHTML = "";
   renderSpinner("search");
   try {
-    const response = await fetch(`${BASE_API_URL}/jobs?search=${searchText}`);
-    if (!response.ok) {
-      console.log("Error");
-    }
-    const data = await response.json();
+    const data = await getData(`${BASE_API_URL}/jobs?search=${searchText}`);
     const { jobItems } = data;
     deRenderSpinner("search");
     numberEl.textContent = jobItems.length;
     renderJobList(jobItems);
   } catch (error) {
-    console.log(error);
+    deRenderSpinner("search");
+    renderError(error.message);
   }
 };
 searchFormEl.addEventListener("submit", submitHandler);
