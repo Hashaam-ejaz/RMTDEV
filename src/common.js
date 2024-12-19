@@ -1,6 +1,13 @@
 //Global Variables
 export const BASE_API_URL = "https://bytegrad.com/course-assets/js/2/api";
 export const DEFAULT_DISPLAY_TIME = 3500;
+export const resultsPerPage = 7;
+
+//STATE
+export const state = {
+  searchJobItems: [],
+  currentPage: 1,
+};
 
 //Elements
 export const bookmarksBtnEl = document.querySelector(".bookmarks-btn");

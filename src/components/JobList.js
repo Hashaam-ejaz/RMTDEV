@@ -3,6 +3,8 @@ import {
   jobDetailsContentEl,
   BASE_API_URL,
   getData,
+  state,
+  resultsPerPage,
 } from "../common.js";
 import renderError from "./Error.js";
 import { renderJobDetails } from "./jobDetails.js";
@@ -23,7 +25,6 @@ const clickHandler = async (event) => {
   const id = jobItemEl.children[0].getAttribute("href");
   try {
     const data = await getData(`${BASE_API_URL}/jobs/${id}`);
-    if (!result.ok) throw new Error(data.description);
     const { jobItem } = data;
     deRenderSpinner("jobDetails");
     renderJobDetails(jobItem);
@@ -34,9 +35,18 @@ const clickHandler = async (event) => {
 };
 jobListSearchEl.addEventListener("click", clickHandler);
 
-export const renderJobList = (jobItems) => {
-  jobItems.slice(0, 7).forEach((jobItem) => {
-    const newJobItemHtml = `
+export const renderJobList = () => {
+  //remove previous job items
+  jobListSearchEl.innerHTML = "";
+
+  //display job items
+  state.searchJobItems
+    .slice(
+      state.currentPage * resultsPerPage - resultsPerPage,
+      state.currentPage * resultsPerPage
+    )
+    .forEach((jobItem) => {
+      const newJobItemHtml = `
             <li class="job-item">
             <a class="job-item__link" href=${jobItem.id}>
                 <div class="job-item__badge">${jobItem.badgeLetters}</div>
@@ -55,6 +65,6 @@ export const renderJobList = (jobItems) => {
                 </div>
             </a>
             </li>`;
-    jobListSearchEl.insertAdjacentHTML("beforeend", newJobItemHtml);
-  });
+      jobListSearchEl.insertAdjacentHTML("beforeend", newJobItemHtml);
+    });
 };
