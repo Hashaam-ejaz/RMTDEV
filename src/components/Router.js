@@ -1,4 +1,9 @@
-import { BASE_API_URL, getData, jobDetailsContentEl } from "../common.js";
+import {
+  BASE_API_URL,
+  getData,
+  jobDetailsContentEl,
+  state,
+} from "../common.js";
 import renderError from "./Error.js";
 import { renderJobDetails } from "./jobDetails.js";
 import { deRenderSpinner, renderSpinner } from "./Spinner.js";
@@ -12,6 +17,7 @@ const loadHashChangeHandler = async () => {
     try {
       const data = await getData(`${BASE_API_URL}/jobs/${id}`);
       const { jobItem } = data;
+      state.activeJobItem = jobItem;
       deRenderSpinner("jobDetails");
       renderJobDetails(jobItem);
     } catch (error) {
