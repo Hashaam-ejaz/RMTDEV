@@ -1,4 +1,4 @@
-import { jobDetailsContentEl } from "../common.js";
+import { jobDetailsContentEl, state } from "../common.js";
 export const renderJobDetails = (jobItem) => {
   const jobDetailsHtml = `
           <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1272&h=348&q=100" alt="#" class="job-details__cover-img">
@@ -13,7 +13,12 @@ export const renderJobDetails = (jobItem) => {
                   <div class="job-info__below-badge">
                       <time class="job-info__time">${jobItem.daysAgo}d</time>
                       <button class="job-info__bookmark-btn">
-                          <i class="fa-solid fa-bookmark job-info__bookmark-icon"></i>
+                          <i class="fa-solid fa-bookmark job-info__bookmark-icon ${
+                            state.bookmarkJobItems.some(
+                              (bookmarkJobItem) =>
+                                bookmarkJobItem.id === jobItem.id
+                            ) && "job-info__bookmark-icon--bookmarked"
+                          }"></i>
                       </button>
                   </div>
               </div>

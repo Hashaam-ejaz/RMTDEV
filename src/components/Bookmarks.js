@@ -26,6 +26,7 @@ const clickHandler = (event) => {
     "bookmarkJobItems",
     JSON.stringify(state.bookmarkJobItems)
   );
+  renderJobList();
 };
 
 const mouseEnterHandler = () => {
